@@ -10,6 +10,7 @@ usage() {
 Uso:
   ./scripts/ambar-studio.sh install      # cria .env (se faltar), builda e sobe
   ./scripts/ambar-studio.sh up           # sobe/rebuilda em background
+  ./scripts/ambar-studio.sh deploy       # sobe, aguarda health e roda smoke
   ./scripts/ambar-studio.sh down         # para e remove containers
   ./scripts/ambar-studio.sh logs         # logs do serviço web
   ./scripts/ambar-studio.sh status       # status dos containers
@@ -95,6 +96,14 @@ case "${cmd}" in
     ensure_docker
     ensure_env
     docker_compose up -d --build
+    ;;
+  deploy)
+    ensure_docker
+    ensure_env
+    docker_compose up -d --build
+    wait_for_health
+    smoke_check
+    docker_compose ps
     ;;
   down)
     ensure_docker
