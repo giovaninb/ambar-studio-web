@@ -1,0 +1,16 @@
+services:
+  web:
+    container_name: ambar-studio-web
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: ambar-studio-web:latest
+    restart: unless-stopped
+    ports:
+      - "${WEB_PORT:-4173}:80"
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
