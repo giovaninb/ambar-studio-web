@@ -15,7 +15,7 @@ export function AppLayout({ title, subtitle, children }: AppLayoutProps) {
       <Sidebar />
       <div className="ml-64">
         <Header title={title} subtitle={subtitle} />
-        <main className="p-8">{children}</main>
+        <main className="mx-auto w-full max-w-[1500px] p-6 lg:p-8">{children}</main>
       </div>
     </div>
   )

@@ -15,8 +15,13 @@ export function CohortsPage() {
 
   return (
     <AppLayout title="Coortes" subtitle="Geração sintética de pacientes em lote">
+      <section className="mb-4 rounded-xl border bg-card px-4 py-3">
+        <p className="text-sm text-muted-foreground">
+          Defina parâmetros clínicos e gere coortes para simulação e testes.
+        </p>
+      </section>
       <section className="grid gap-6 lg:grid-cols-[1.1fr_1fr]">
-        <Card className="shadow-sm">
+        <Card className="border-border/80 shadow-sm">
           <CardHeader>
             <CardTitle>Cohort Builder</CardTitle>
           </CardHeader>
@@ -33,7 +38,7 @@ export function CohortsPage() {
           </CardContent>
         </Card>
 
-        <Card className="shadow-sm">
+        <Card className="border-border/80 shadow-sm">
           <CardHeader>
             <CardTitle>Coortes recentes</CardTitle>
           </CardHeader>

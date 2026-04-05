@@ -23,6 +23,11 @@ export function ExportsPage() {
 
   return (
     <AppLayout title="Exportações" subtitle="Visualização técnica em JSON e FHIR Bundle">
+      <section className="mb-4 rounded-xl border bg-card px-4 py-3">
+        <p className="text-sm text-muted-foreground">
+          Valide estrutura e interoperabilidade antes de integrar com consumidores externos.
+        </p>
+      </section>
       <section className="grid gap-6 xl:grid-cols-2">
         <CodeViewer title="JSON do cenário (mock)" code={scenarioJson} />
         <CodeViewer
@@ -31,7 +36,7 @@ export function ExportsPage() {
         />
       </section>
 
-      <Card className="mt-6 shadow-sm">
+      <Card className="mt-6 border-border/80 shadow-sm">
         <CardHeader>
           <CardTitle>Validade estrutural</CardTitle>
         </CardHeader>

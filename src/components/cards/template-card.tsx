@@ -9,7 +9,7 @@ interface TemplateCardProps {
 
 export function TemplateCard({ template }: TemplateCardProps) {
   return (
-    <Card className="shadow-sm">
+    <Card className="border-border/80 shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md">
       <CardHeader>
         <CardTitle>{template.name}</CardTitle>
       </CardHeader>
@@ -19,6 +19,13 @@ export function TemplateCard({ template }: TemplateCardProps) {
           <Badge variant="secondary">{template.category}</Badge>
           <Badge variant="outline">{template.complexity}</Badge>
           <Badge variant="outline">{template.eventCount} eventos</Badge>
+        </div>
+        <div className="flex flex-wrap gap-2 text-xs text-muted-foreground">
+          {template.tags.map((tag) => (
+            <span key={tag} className="rounded-full bg-muted px-2 py-1">
+              #{tag}
+            </span>
+          ))}
         </div>
       </CardContent>
       <CardFooter className="flex justify-between">

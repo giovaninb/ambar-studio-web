@@ -14,7 +14,10 @@ export function ScenariosPage() {
 
   return (
     <AppLayout title="Cenários" subtitle="Gestão de cenários clínicos sintéticos">
-      <div className="mb-4 flex justify-end">
+      <div className="mb-4 flex items-center justify-between rounded-xl border bg-card px-4 py-3">
+        <p className="text-sm text-muted-foreground">
+          Visualize, duplique e evolua jornadas clínicas com consistência.
+        </p>
         <Button render={<Link to="/scenarios/new" />}>Novo cenário</Button>
       </div>
       <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">

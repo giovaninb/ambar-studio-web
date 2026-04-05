@@ -11,7 +11,7 @@ interface ScenarioCardProps {
 
 export function ScenarioCard({ scenario }: ScenarioCardProps) {
   return (
-    <Card className="shadow-sm">
+    <Card className="border-border/80 shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md">
       <CardHeader>
         <CardTitle>{scenario.name}</CardTitle>
       </CardHeader>
@@ -23,6 +23,13 @@ export function ScenarioCard({ scenario }: ScenarioCardProps) {
         </div>
         <div className="text-sm text-muted-foreground">
           Atualizado em {new Date(scenario.updatedAt).toLocaleDateString("pt-BR")}
+        </div>
+        <div className="flex flex-wrap gap-2 text-xs text-muted-foreground">
+          {scenario.tags.map((tag) => (
+            <span key={tag} className="rounded-full bg-muted px-2 py-1">
+              #{tag}
+            </span>
+          ))}
         </div>
       </CardContent>
       <CardFooter className="flex justify-between">

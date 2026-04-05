@@ -19,6 +19,15 @@ export function DashboardPage() {
       title="Dashboard"
       subtitle="Visão consolidada de cenários, templates, coortes e atividade recente"
     >
+      <section className="mb-4 flex items-center justify-between rounded-xl border bg-card px-4 py-3">
+        <p className="text-sm text-muted-foreground">
+          Ambiente pronto para simulação clínica, coortes sintéticas e interoperabilidade.
+        </p>
+        <Button variant="outline" size="sm" render={<Link to="/exports" />}>
+          Ver exportações
+        </Button>
+      </section>
+
       <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
         <MetricCard
           label="Cenários"
@@ -39,7 +48,7 @@ export function DashboardPage() {
       </section>
 
       <section className="mt-6 grid gap-6 lg:grid-cols-[2fr_1fr]">
-        <Card className="shadow-sm">
+        <Card className="border-border/80 shadow-sm">
           <CardHeader>
             <CardTitle>Atividade recente</CardTitle>
           </CardHeader>
@@ -56,7 +65,7 @@ export function DashboardPage() {
           </CardContent>
         </Card>
 
-        <Card className="shadow-sm">
+        <Card className="border-border/80 shadow-sm">
           <CardHeader>
             <CardTitle>Ações rápidas</CardTitle>
           </CardHeader>
