@@ -20,6 +20,25 @@ npm run dev
 
 Servidor padrão: `http://localhost:5173`.
 
+## Backend real (`ambar-core`)
+
+O frontend tenta usar API real e, se falhar, cai para mocks automaticamente.
+
+Crie um `.env.local` para desenvolvimento local:
+
+```bash
+VITE_API_BASE_URL=http://localhost:8080
+VITE_API_DEV_SUB=ana
+VITE_USE_MOCKS=false
+```
+
+Opções:
+
+- `VITE_API_BASE_URL`: base da API (vazio usa mesma origem)
+- `VITE_API_DEV_SUB`: subject para obter token em `/api/dev/token`
+- `VITE_API_TOKEN`: token fixo (opcional)
+- `VITE_USE_MOCKS=true`: força mocks
+
 ## Rotas implementadas
 
 - `/`
@@ -74,6 +93,5 @@ cp .env.example .env
 Deploy/update:
 
 ```bash
-./scripts/ambar-studio.sh up
-./scripts/ambar-studio.sh smoke
+./scripts/ambar-studio.sh deploy
 ```

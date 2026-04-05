@@ -10,7 +10,7 @@ usage() {
 Uso:
   ./scripts/ambar-studio.sh install      # cria .env (se faltar), builda e sobe
   ./scripts/ambar-studio.sh up           # sobe/rebuilda em background
-  ./scripts/ambar-studio.sh deploy       # sobe, aguarda health e roda smoke
+  ./scripts/ambar-studio.sh deploy       # atualiza git + sobe + health + smoke
   ./scripts/ambar-studio.sh down         # para e remove containers
   ./scripts/ambar-studio.sh logs         # logs do serviço web
   ./scripts/ambar-studio.sh status       # status dos containers
@@ -43,6 +43,21 @@ ensure_env() {
 
 docker_compose() {
   (cd "${ROOT_DIR}" && docker compose "$@")
+}
+
+update_repo() {
+  require_cmd git
+  (
+    cd "${ROOT_DIR}"
+    if [[ -n "$(git status --porcelain)" ]]; then
+      echo "Repositório com mudanças locais. Commit/stash antes do deploy."
+      exit 1
+    fi
+    local branch
+    branch="$(git rev-parse --abbrev-ref HEAD)"
+    git fetch origin
+    git pull --ff-only origin "${branch}"
+  )
 }
 
 read_web_port() {
@@ -100,6 +115,7 @@ case "${cmd}" in
   deploy)
     ensure_docker
     ensure_env
+    update_repo
     docker_compose up -d --build
     wait_for_health
     smoke_check

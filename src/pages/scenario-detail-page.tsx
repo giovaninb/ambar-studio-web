@@ -1,6 +1,8 @@
 import { useQuery } from "@tanstack/react-query"
-import { useParams } from "react-router-dom"
+import { Link } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 
+import { EmptyPanel, ErrorPanel, LoadingPanel } from "@/components/common/state-panels"
 import { Timeline } from "@/components/timeline/timeline"
 import { AppLayout } from "@/components/layout/layout"
 import { Badge } from "@/components/ui/badge"
@@ -9,22 +11,49 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { api } from "@/lib/api"
 
 export function ScenarioDetailPage() {
+  const navigate = useNavigate()
   const params = useParams()
   const id = params.id ?? ""
 
-  const { data } = useQuery({
+  const { data, isPending, isError, refetch } = useQuery({
     queryKey: ["scenario", id],
     queryFn: () => api.getScenarioById(id),
+    enabled: Boolean(id),
   })
+
+  if (isPending) {
+    return (
+      <AppLayout title="Detalhe do cenário" subtitle="Carregando dados clínicos">
+        <LoadingPanel
+          title="Carregando cenário"
+          description="Buscando dados do paciente e timeline."
+        />
+      </AppLayout>
+    )
+  }
+
+  if (isError) {
+    return (
+      <AppLayout title="Detalhe do cenário" subtitle="Falha ao carregar cenário">
+        <ErrorPanel
+          title="Erro ao consultar cenário"
+          description="Não foi possível obter os dados do cenário solicitado."
+          actionLabel="Tentar novamente"
+          onAction={() => void refetch()}
+        />
+      </AppLayout>
+    )
+  }
 
   if (!data?.scenario || !data.patient) {
     return (
       <AppLayout title="Detalhe do cenário" subtitle="Cenário não encontrado">
-        <Card>
-          <CardContent className="p-6">
-            <p className="text-sm text-muted-foreground">Nenhum cenário encontrado para o ID informado.</p>
-          </CardContent>
-        </Card>
+        <EmptyPanel
+          title="Cenário não encontrado"
+          description="Nenhum cenário foi localizado para o identificador informado."
+          actionLabel="Voltar para cenários"
+          onAction={() => navigate("/scenarios")}
+        />
       </AppLayout>
     )
   }
@@ -68,7 +97,7 @@ export function ScenarioDetailPage() {
             </ul>
             <div className="flex flex-col gap-2 pt-2">
               <Button size="sm">Salvar cenário</Button>
-              <Button size="sm" variant="outline">
+              <Button size="sm" variant="outline" render={<Link to="/exports" />}>
                 Exportar
               </Button>
               <Button size="sm" variant="ghost">

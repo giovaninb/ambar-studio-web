@@ -1,6 +1,8 @@
 import { Activity, Boxes, FileOutput, FlaskConical, LayoutDashboard, Settings } from "lucide-react"
 import { NavLink } from "react-router-dom"
 
+import { cn } from "@/lib/utils"
+
 const items = [
   { to: "/", label: "Dashboard", icon: LayoutDashboard },
   { to: "/scenarios", label: "Cenários", icon: Activity },
@@ -10,9 +12,16 @@ const items = [
   { to: "/settings", label: "Configurações", icon: Settings },
 ]
 
-export function Sidebar() {
+interface SidebarProps {
+  className?: string
+  onNavigate?: () => void
+}
+
+export function Sidebar({ className, onNavigate }: SidebarProps) {
   return (
-    <aside className="fixed inset-y-0 left-0 z-20 w-64 border-r bg-sidebar text-sidebar-foreground">
+    <aside
+      className={cn("h-full border-r bg-sidebar text-sidebar-foreground", className)}
+    >
       <div className="border-b px-6 py-5">
         <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground">Ambar</p>
         <h1 className="mt-1 text-lg font-semibold">Scenario Studio</h1>
@@ -28,6 +37,7 @@ export function Sidebar() {
               key={item.to}
               to={item.to}
               end={item.to === "/"}
+              onClick={onNavigate}
               className={({ isActive }) =>
                 [
                   "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm transition-colors",

@@ -1,4 +1,4 @@
-import { Bell, CalendarDays, Search } from "lucide-react"
+import { Bell, CalendarDays, Menu, Search } from "lucide-react"
 import { Link } from "react-router-dom"
 
 import { Button } from "@/components/ui/button"
@@ -6,9 +6,10 @@ import { Button } from "@/components/ui/button"
 interface HeaderProps {
   title: string
   subtitle?: string
+  onOpenMenu?: () => void
 }
 
-export function Header({ title, subtitle }: HeaderProps) {
+export function Header({ title, subtitle, onOpenMenu }: HeaderProps) {
   const today = new Date().toLocaleDateString("pt-BR", {
     day: "2-digit",
     month: "short",
@@ -16,10 +17,21 @@ export function Header({ title, subtitle }: HeaderProps) {
   })
 
   return (
-    <header className="sticky top-0 z-10 border-b bg-background/90 px-8 py-4 backdrop-blur">
+    <header className="sticky top-0 z-10 border-b bg-background/90 px-4 py-4 backdrop-blur lg:px-8">
       <div className="flex items-center justify-between gap-4">
         <div>
-          <h2 className="text-2xl font-semibold tracking-tight">{title}</h2>
+          <div className="mb-1 flex items-center gap-2 lg:mb-0">
+            <Button
+              variant="outline"
+              size="icon-sm"
+              aria-label="Abrir menu"
+              className="lg:hidden"
+              onClick={onOpenMenu}
+            >
+              <Menu />
+            </Button>
+            <h2 className="text-xl font-semibold tracking-tight lg:text-2xl">{title}</h2>
+          </div>
           {subtitle ? <p className="text-sm text-muted-foreground">{subtitle}</p> : null}
         </div>
         <div className="flex items-center gap-2">
@@ -27,10 +39,10 @@ export function Header({ title, subtitle }: HeaderProps) {
             <CalendarDays className="size-3.5" />
             {today}
           </div>
-          <Button size="sm" render={<Link to="/scenarios/new" />}>
+          <Button size="sm" className="hidden sm:inline-flex" render={<Link to="/scenarios/new" />}>
             Novo cenário
           </Button>
-          <Button variant="outline" size="sm">
+          <Button variant="outline" size="sm" className="hidden md:inline-flex">
             <Search />
             Buscar
           </Button>

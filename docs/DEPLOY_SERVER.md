@@ -24,13 +24,11 @@ Por padrão, a aplicação sobe em `http://SERVER_IP:4173`.
 
 ```bash
 cd /opt/ambar-studio-web
-git fetch origin
-git checkout main
-git pull --ff-only origin main
-./scripts/ambar-studio.sh up
+./scripts/ambar-studio.sh deploy
 ./scripts/ambar-studio.sh status
-./scripts/ambar-studio.sh smoke
 ```
+
+`deploy` já executa `git fetch` + `git pull --ff-only` na branch atual antes de rebuildar.
 
 ## Comandos operacionais
 
