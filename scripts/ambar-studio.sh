@@ -44,12 +44,42 @@ docker_compose() {
   (cd "${ROOT_DIR}" && docker compose "$@")
 }
 
+read_web_port() {
+  local port
+  port="$(grep -E '^WEB_PORT=' "${ENV_FILE}" | cut -d '=' -f2 || true)"
+  echo "${port:-4173}"
+}
+
 smoke_check() {
   require_cmd curl
   local port
-  port="$(grep -E '^WEB_PORT=' "${ENV_FILE}" | cut -d '=' -f2 || true)"
-  port="${port:-4173}"
+  port="$(read_web_port)"
   curl -fsS "http://localhost:${port}/health" && echo
+}
+
+wait_for_health() {
+  local max_attempts=30
+  local attempt=1
+  local port
+  port="$(read_web_port)"
+
+  echo "Aguardando frontend ficar saudável em http://localhost:${port}/health ..."
+  until curl -fsS "http://localhost:${port}/health" >/dev/null 2>&1; do
+    if (( attempt >= max_attempts )); then
+      echo "Timeout aguardando health do frontend."
+      echo
+      echo "Status dos containers:"
+      docker_compose ps || true
+      echo
+      echo "Últimos logs do serviço web:"
+      docker_compose logs --tail=120 web || true
+      exit 1
+    fi
+    attempt=$((attempt + 1))
+    sleep 2
+  done
+
+  echo "Frontend pronto: http://localhost:${port}"
 }
 
 cmd="${1:-}"
@@ -58,6 +88,7 @@ case "${cmd}" in
     ensure_docker
     ensure_env
     docker_compose up -d --build
+    wait_for_health
     smoke_check
     ;;
   up)
