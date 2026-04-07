@@ -49,8 +49,9 @@ update_repo() {
   require_cmd git
   (
     cd "${ROOT_DIR}"
-    if [[ -n "$(git status --porcelain)" ]]; then
-      echo "Repositório com mudanças locais. Commit/stash antes do deploy."
+    # Allow untracked local files like .env in server deployments.
+    if [[ -n "$(git status --porcelain --untracked-files=no)" ]]; then
+      echo "Repositório com mudanças versionadas locais. Commit/stash antes do deploy."
       exit 1
     fi
     local branch
